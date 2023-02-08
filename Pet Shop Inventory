@@ -1,0 +1,32 @@
+--Table Creation 
+CREATE TABLE Inventory (id INTEGER PRIMARY KEY, Name TEXT, Breed TEXT, Age INTEGER, "Spay/Neuter" TEXT, PRICE INTEGER);
+
+--Data Insertion into Table
+INSERT INTO Inventory VALUES (1, "Rocco", "German Shepherd", 2, "Yes", 450);
+INSERT INTO Inventory VALUES (2, "Cindy-Lou", "Pomeranian", 1, "No", 250);
+INSERT INTO Inventory VALUES (3, "Angus", "Anatolian Shepherd", 5, "Yes", 650);
+INSERT INTO Inventory VALUES (4, "Rufus", "Chihuaha", 7, "Yes", 150);
+INSERT INTO Inventory VALUES (5, "Sasha", "Akita", 3, "No", 2700);
+INSERT INTO Inventory VALUES (6, "Leonard", "Corgie", 2, "Yes", 450);
+INSERT INTO Inventory VALUES (7, "Luna", "Black Lab", 9, "Yes", 150);
+INSERT INTO Inventory VALUES (8, "Odie", "Bernise Mountain Dog", 1, "No", 1150);
+INSERT INTO Inventory VALUES (9, "Daisy", "Chipuggle", 8, "Yes", 50);
+INSERT INTO Inventory VALUES (10, "Bailey", "Yellow Lab", 7, "Yes", 600);
+INSERT INTO Inventory VALUES (11, "Marley", "Chocolate Lab", 3, "Yes", 650);
+INSERT INTO Inventory VALUES (12, "Sparky", "American English Coonhound", 1, "Yes", 3200);
+INSERT INTO Inventory VALUES (13, "Diesel", "Yorkie", 9, "No", 200);
+INSERT INTO Inventory VALUES (14, "Sammy", "Akita", 9, "Yes", 400);
+INSERT INTO Inventory VALUES (15, "Sadie", "Border Collie", 5, "Yes", 700);
+
+--Select all from table
+Select * from Inventory;
+
+--Select all puppies and list name, breed, and price and order them by price
+Select Name, Breed, PRICE FROM Inventory ORDER BY Price;
+
+--Display total store potential inventory value
+Select Sum(Price) AS "Value" FROM Inventory;
+
+--List all puppy names
+Select Name FROM Inventory
+
