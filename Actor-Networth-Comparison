@@ -1,0 +1,68 @@
+--Creating my list of actors and basic informatiom
+CREATE TABLE actors (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fullname TEXT,
+    age INTEGER,
+    nationality TEXT);
+   
+--Inserting information into my new table   
+INSERT INTO actors (fullname,age,nationality) VALUES ("Brad Pitt", 59, "USA");
+INSERT INTO actors (fullname,age,nationality) VALUES ("Tom Cruise", 60, "USA");
+INSERT INTO actors (fullname,age,nationality) VALUES ("Morgan Freeman", 85, "USA");
+INSERT INTO actors (fullname,age,nationality) VALUES ("Natalie Portman", 41, "Israel");
+INSERT INTO actors (fullname,age,nationality) VALUES ("Amy Adams", 48, "Italy");
+INSERT INTO actors (fullname,age,nationality) VALUES("Dennis Rodman",61,"USA");
+INSERT INTO actors (fullname,age,nationality) VALUES("Tyler Perry",52,"USA");
+INSERT INTO actors (fullname,age,nationality) VALUES("Shahrukh Khan",56,"India");
+INSERT INTO actors (fullname,age,nationality) VALUES("Jerry Seinfeld",67,"USA");
+INSERT INTO actors (fullname,age,nationality) VALUES("George Clooney",60,"USA");
+INSERT INTO actors (fullname,age,nationality) VALUES("Robert De Niro",78,"USA");
+INSERT INTO actors (fullname,age,nationality) VALUES("Amitabh Bachchan",80,"India");
+INSERT INTO actors (fullname,age,nationality) VALUES("Mel Gibson",66,"USA");
+INSERT INTO actors (fullname,age,nationality) VALUES("Adam Sandler",55,"USA");
+INSERT INTO actors (fullname,age,nationality) VALUES("Jack Nicholson",84,"USA");
+
+--Creating a new table with actors id's and their networth
+CREATE TABLE actor_networth (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    actor_id INTEGER,
+    networth INTEGER);
+
+--Inserting networth data and id's into my table
+INSERT INTO actor_networth (actor_id,networth) VALUES (1,300000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (2,600000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (3,250000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (4,90000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (5,60000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (6,-300000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (7,700000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (8,715000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (9,950000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (10,550000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (11,500000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (12,455000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (13,425000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (14,420000000);
+INSERT INTO actor_networth (actor_id,networth) VALUES (15,400000000);
+
+--Inner Join
+--Show me actors and their networths
+Select actors.fullname AS "Actor Name", actor_networth.networth AS "Networth" from actor_networth
+JOIN actors ON actors.id = actor_networth.actor_id;
+
+--Left Outer Join
+--Who is worth over 100 million?
+Select actors.fullname AS "Over 100 Million"
+FROM actors
+LEFT JOIN actor_networth ON actors.id = actor_networth.actor_id
+WHERE actor_networth.networth >100000000;
+
+--Who is worth the most that is not a US citizen?
+Select a.fullname AS "Actor", a.nationality AS "Nationality", n.networth AS "Networth"
+FROM actors AS a
+LEFT JOIN actor_networth AS n ON a.id = n.actor_id
+WHERE a.nationality NOT LIKE "USA"
+ORDER BY networth DESC
+
+
+
