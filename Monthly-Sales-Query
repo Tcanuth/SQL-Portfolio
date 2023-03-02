@@ -1,0 +1,48 @@
+--In this SQL, I'm querying a database with multiple tables in it to quantify statistics about customer and order data. 
+
+--#1. How many orders were placed in January? 
+Select Count(*) from BIT_DB.JanSales
+WHERE OrderID <> 'Order ID'
+AND length(orderID) = 6;
+
+--#2. How many of those orders were for an iPhone? 
+Select Count(*) from BIT_DB.JanSales
+WHERE Product = 'iPhone'
+AND OrderID <> 'Order ID'
+AND length(orderID) = 6;;
+
+--#3. Select the customer account numbers for all the orders that were placed in February.
+Select DISTINCT acctnum FROM BIT_DB.customers
+JOIN FebSales on FebSales.orderID = customers.order_id
+WHERE FebSales.orderID <> 'Order ID'
+AND length(orderID) = 6;
+
+--#4. Which product was the cheapest one sold in January, and what was the price?
+Select JanSales.Product, JanSales.price from BIT_DB.JanSales
+WHERE JanSales.Product <> 'Product'
+AND JanSales.Product <>''
+ORDER BY JanSales.price ASC
+LIMIT 1;
+
+--#5. What is the total revenue for each product sold in January?
+Select JanSales.Product, SUM(JanSales.quantity)*JanSales.price AS 'Revenue' FROM BIT_DB.JanSales
+WHERE JanSales.Product <> ''
+AND JanSales.orderID <> 'Order ID'
+GROUP BY JanSales.Product;
+
+--#6. Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
+Select FebSales.Product, Count(FebSales.Product) AS 'Quantity Sold', SUM(FebSales.quantity)*price AS 'Revenue' FROM BIT_DB.FebSales
+WHERE FebSales.Product <> ''
+AND FebSales.orderID <> 'Order ID'
+AND FebSales.location = '548 Lincoln St, Seattle, WA 98101';
+
+--#7. How many customers ordered more than 2 products at a time, and what was the average amount spent for those customers? 
+select 
+count(distinct cust.acctnum), 
+avg(quantity*price)
+FROM BIT_DB.FebSales Feb
+LEFT JOIN BIT_DB.customers cust
+ON FEB.orderid=cust.order_id
+WHERE Feb.Quantity>2
+AND length(orderid) = 6 
+AND orderid <> 'Order ID'
