@@ -1,0 +1,73 @@
+# For this project, I downloaded Spotify data from Kaggle.
+# Then I created a table to insert Spotify data into.
+# Finally, I performed analytics on the data using SQL. 
+
+#Creating the table: 
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)
+
+#Then I inserted the Spotify Data .csv into the table.
+
+#Next, I explored the data using the following SQL. 
+
+--#1.What is the top 10 most popular songs
+Select popularity AS 'Rank', track_name AS 'Title', artist_name AS 'Artist'
+FROM BIT_DB.Spotifydata
+ORDER BY popularity DESC
+LIMIT 10
+--#2. Which song is the loudest
+Select track_name AS 'Title', artist_name, loudness
+FROM BIT_DB.Spotifydata
+ORDER BY loudness DESC
+LIMIT 1
+--#3. What is the average loudness of the list
+Select AVG(loudness) from Spotifydata
+--#4. Who has the most songs on the list?
+Select artist_name, COUNT(artist_name) AS 'Top 50 Songs'
+FROM Spotifydata
+GROUP BY artist_name
+ORDER BY COUNT(artist_name) DESC
+LIMIT 1
+--#5. What artist released the longest song?
+Select artist_name AS 'Artist', MAX(duration_ms) AS 'Duration (Ms)', (duration_ms / 1000) AS 'Duration (Sec)', ((duration_ms / 1000)/60) AS 'Duration (Min)'
+FROM Spotifydata
+--#6. What is the most popular song with a tempo over 125
+Select track_name, artist_name, tempo
+FROM Spotifydata
+WHERE tempo > 125
+ORDER BY popularity DESC
+LIMIT 1
+--#7. What is the average danceability of the top 10 songs
+Select AVG(danceability) FROM (Select * from Spotifydata
+ORDER BY popularity DESC
+LIMIT 10)
+--#8.What is the total length of all the songs in the list if played back to back in minutes?
+Select SUM(duration_ms)/60000 AS 'Playlist Length in Minutes'
+FROM Spotifydata
+--#9. What is the name of the longest titled song.
+Select track_name from Spotifydata
+ORDER BY length(track_name) DESC
+LIMIT 1
+--#10. What is the highest acousticness of songs over a deanceability rating of .8
+Select acousticness from Spotifydata
+WHERE danceability > .8
+ORDER BY acousticness DESC
+LIMIT 1
