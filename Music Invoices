@@ -1,0 +1,96 @@
+--1) Show Customers (their full names, customer ID, and country) who are not in the US. (Hint: != or <> can be used to say "is not equal to").
+
+Select CustomerID, FirstName, LastName, Country from customers
+WHERE Country != 'USA'
+
+
+--2) Show only the Customers from Brazil.
+
+Select * from customers
+WHERE Country = 'Brazil'
+
+
+--3) Find the Invoices of customers who are from Brazil. The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country.
+
+Select cust.FirstName as 'First Name', LastName as 'Last Name', invoices.BillingCountry as 'Billing Country', invoices.InvoiceID as 'Invoice ID', invoices.InvoiceDate as 'Invoice Date' from customers cust
+JOIN invoices on cust.CustomerID = invoices.CustomerID
+WHERE invoices.BillingCountry = 'Brazil'
+
+
+--4) Find a unique/distinct list of billing countries from the Invoice table.
+
+Select BillingCountry from invoices
+GROUP BY BillingCountry
+
+
+--5) Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+
+Select employees.FirstName as 'Agent First Name', employees.LastName as 'Agent Last Name', invoices.InvoiceId as 'Invoice ID' from employees
+JOIN customers ON employees.EmployeeId = customers.SupportRepId
+JOIN invoices ON invoices.CustomerId = customers.CustomerId
+
+
+--6) Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.
+
+Select customers.FirstName as 'Customer First Name', customers.LastName as 'Customer Last Name', customers.Country as 'Customer Country',employees.FirstName as 'Rep First Name', employees.LastName as 'Rep Last Name', SUM(invoices.Total) as 'Invoice Total' from invoices
+JOIN customers ON customers.CustomerId = invoices.CustomerId
+JOIN employees ON employees.EmployeeId = customers.SupportRepId
+GROUP BY invoices.InvoiceId
+ORDER BY SUM(invoices.Total) ASC
+
+
+--7) How many Invoices were there in 2009?
+
+Select COUNT(InvoiceId) as '2009 Invoices' from invoices
+WHERE InvoiceDate LIKE '2009%'
+
+
+--8) What are the total sales for 2009?
+
+Select SUM(total) as '2009 Sales' from invoices
+WHERE InvoiceDate LIKE '2009%'
+
+
+--9) Write a query that includes the purchased track name with each invoice line ID.
+
+Select invoice_items.InvoiceLineId, tracks.Name from tracks
+JOIN invoice_items ON invoice_items.TrackId = tracks.TrackId
+ORDER BY InvoiceLineId ASC
+
+
+--10) Write a query that includes the purchased track name AND artist name with each invoice line ID.
+
+Select invoice_items.InvoiceLineId, tracks.Name, artists.Name as "Artist Name" from tracks
+JOIN invoice_items ON invoice_items.TrackId = tracks.TrackId
+JOIN artists ON artists.ArtistId = albums.ArtistID
+JOIN albums ON albums.albumid = tracks.Albumid
+ORDER BY InvoiceLineId ASC
+
+
+--11) Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre.
+
+Select tracks.Name, albums.Title as 'Album Title', media_types.Name as 'Media Type', genres.Name as 'Genre' FROM tracks
+JOIN albums ON albums.AlbumId = tracks.AlbumId
+JOIN media_types ON media_types.MediaTypeId = tracks.MediaTypeId
+JOIN genres ON genres.GenreId = tracks.GenreId
+
+
+--12) Show the total sales made by each sales agent.
+
+SELECT ROUND(SUM(invoices.total),2) as "Total Sales", employees.FirstName as "Employee First Name", employees.LastName as "Employee Last Name" from invoices
+JOIN employees on customers.SupportRepId = employees.EmployeeId
+JOIN customers on customers.CustomerId = invoices.CustomerId
+Group By customers.SupportRepId
+
+
+--13) Which sales agent made the most dollars in sales in 2009?
+
+SELECT ROUND(SUM(invoices.total),2) as '2009 Sales', employees.FirstName as 'Employee First Name', employees.LastName as 'Employee Last Name' from invoices
+JOIN employees on customers.SupportRepId = employees.EmployeeId
+JOIN customers on customers.CustomerId = invoices.CustomerId
+WHERE invoices.InvoiceDate LIKE "2009%"
+Group By customers.SupportRepId
+ORDER BY "2009 Sales" DESC LIMIT 1
+
+
+
